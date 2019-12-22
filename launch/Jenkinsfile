@@ -28,16 +28,15 @@ try {
             deleteDir()
             installTychoVersionsHotfix()
             releaseOpenHab2Component('openhab2-addons', true)
-            releaseOpenHab2Component('org.openhab.binding.zwave', true)
-            releaseOpenHab2Component('org.openhab.binding.zigbee', true)
-            releaseOpenHab2Component('openhab-webui', true)
         }    
-    }, "openhab1-addons": {
+    }, "openhab2-extra-addons": {
         if(!env.SKIP_OH1_BUILD?.toBoolean()) {
             node {
                 deleteDir()
-                installTychoVersionsHotfix()
-                releaseOpenHab1Component('openhab1-addons', false)
+                installTychoVersionsHotfix()                
+                releaseOpenHab2Component('org.openhab.binding.zwave', true)
+                releaseOpenHab2Component('org.openhab.binding.zigbee', true)
+                releaseOpenHab2Component('openhab-webui', true)
             }
         }
     }
@@ -63,11 +62,6 @@ if("FAILURE".equals(currentBuild.previousBuild?.result)) {
 def releaseESH() {
     def branch = env.ESH_BRANCH ?: 'master'
     releaseOpenHabComponent("smarthome", branch, env.ESH_RELEASE_VERSION, env.ESH_NEXT_VERSION, false, false)
-}
-
-def releaseOpenHab1Component(componentName, updateParent) {
-    def branch = env.OH1_BRANCH ?: 'master'
-    releaseOpenHabComponent(componentName, branch, env.OH1_RELEASE_VERSION, env.OH1_NEXT_VERSION, updateParent, false)
 }
 
 def releaseOpenHab2Component(componentName, updateParent) {
